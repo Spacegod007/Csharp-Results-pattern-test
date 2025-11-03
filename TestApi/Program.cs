@@ -2,6 +2,7 @@ using TestApi.Users.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+_ = builder.Services.AddControllers();
 _ = builder.Services.AddEndpointsApiExplorer();
 _ = builder.Services.AddSwaggerGen();
 
@@ -9,8 +10,7 @@ _ = builder.Services.AddSingleton<IUserService, UserService>();
 
 var app = builder.Build();
 
-_ = app.MapGet("/users", async (IUserService userService) => await userService.GetAllUsersAsync());
-_ = app.MapGet("/users/{id:guid}", async (Guid id, IUserService userService) => await userService.GetUserByIdAsync(id));
+app.MapControllers();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

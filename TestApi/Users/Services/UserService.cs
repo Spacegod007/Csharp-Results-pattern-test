@@ -15,26 +15,23 @@ public class UserService : IUserService
 
     public UserService()
     {
-        Console.WriteLine("User1 {0}", User1);
-        Console.WriteLine("User2 {0}", User2);
-        Console.WriteLine("User3 {0}", User3);
     }
 
     public Task<IResult> GetAllUsersAsync()
     {
         var result = Results.Ok(_users);
-        return Task.FromResult(result);
+        return Task.FromResult<IResult>(result);
     }
 
     public Task<IResult> GetUserByIdAsync(Guid id)
     {
         var user = _users.FirstOrDefault(u => u.Id == id);
-        
+
         if (user is null)
         {
-            return Task.FromResult(Results.NotFound());
+            return Task.FromResult<IResult>(Results.NotFound());
         }
 
-        return Task.FromResult(Results.Ok(user));
+        return Task.FromResult<IResult>(Results.Ok(user));
     }
 }

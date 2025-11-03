@@ -1,6 +1,6 @@
-﻿
+﻿namespace TestApi.Users.Services;
 
-namespace TestApi.Users.Services;
+using Microsoft.AspNetCore.Http;
 
 public interface IUserService
 {

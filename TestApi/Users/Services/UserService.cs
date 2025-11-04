@@ -25,6 +25,7 @@ public class UserService : IUserService
     {
         // Simulate async operation to preven compiler warning
         await Task.CompletedTask;
+
         return _users;
     }
 
@@ -37,11 +38,10 @@ public class UserService : IUserService
 
         if (user is null)
         {
-            var nf = new UserNotFound(id);
-            return nf;
+            var notFound = new UserNotFound(id);
+            return notFound;
         }
 
-        var ok = OneOf<User, UserNotFound>.FromT0(user);
-        return ok;
+        return user;
     }
 }

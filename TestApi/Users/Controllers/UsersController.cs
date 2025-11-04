@@ -1,3 +1,5 @@
+using Ardalis.Result.AspNetCore;
+
 using Microsoft.AspNetCore.Mvc;
 
 using TestApi.Users.Services;
@@ -19,13 +21,23 @@ public class UsersController : ControllerBase
     public async Task GetAll()
     {
         var result = await _userService.GetAllUsersAsync();
-        await result.ExecuteAsync(HttpContext);
+
+        await result.ToMinimalApiResult()
+            .ExecuteAsync(HttpContext);
+
+        // Alternatively when returning ActionResult<T>
+        //return await result.ToActionResult(this);
     }
 
     [HttpGet("{id:guid}")]
     public async Task GetById(Guid id)
     {
         var result = await _userService.GetUserByIdAsync(id);
-        await result.ExecuteAsync(HttpContext);
+
+        await result.ToMinimalApiResult()
+            .ExecuteAsync(HttpContext);
+
+        // Alternatively when returning ActionResult<T>
+        //return await result.ToActionResult(this);
     }
 }

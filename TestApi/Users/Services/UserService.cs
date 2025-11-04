@@ -1,4 +1,6 @@
-﻿namespace TestApi.Users.Services;
+﻿using Ardalis.Result;
+
+namespace TestApi.Users.Services;
 
 public class UserService : IUserService
 {
@@ -17,21 +19,26 @@ public class UserService : IUserService
     {
     }
 
-    public Task<IResult> GetAllUsersAsync()
+    public async Task<Result<IEnumerable<User>>> GetAllUsersAsync()
     {
-        var result = Results.Ok(_users);
-        return Task.FromResult<IResult>(result);
+        // Simulate an async operation to prevent compiler warnings
+        await Task.CompletedTask;
+
+        return Result.Success(_users);
     }
 
-    public Task<IResult> GetUserByIdAsync(Guid id)
+    public async Task<Result<User>> GetUserByIdAsync(Guid id)
     {
+        // Simulate an async operation to prevent compiler warnings
+        await Task.CompletedTask;
+
         var user = _users.FirstOrDefault(u => u.Id == id);
 
         if (user is null)
         {
-            return Task.FromResult<IResult>(Results.NotFound());
+            return Result.NotFound();
         }
 
-        return Task.FromResult<IResult>(Results.Ok(user));
+        return Result.Success(user);
     }
 }

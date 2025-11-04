@@ -1,7 +1,9 @@
-﻿namespace TestApi.Users.Services;
+﻿using Ardalis.Result;
+
+namespace TestApi.Users.Services;
 
 public interface IUserService
 {
-    Task<IResult> GetAllUsersAsync();
-    Task<IResult> GetUserByIdAsync(Guid id);
+    Task<Result<IEnumerable<User>>> GetAllUsersAsync();
+    Task<Result<User>> GetUserByIdAsync(Guid id);
 }

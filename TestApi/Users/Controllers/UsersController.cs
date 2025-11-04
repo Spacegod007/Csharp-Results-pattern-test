@@ -1,3 +1,5 @@
+using ErrorOr;
+
 using Microsoft.AspNetCore.Mvc;
 
 using TestApi.Users.Services;
@@ -19,13 +21,35 @@ public class UsersController : ControllerBase
     public async Task GetAll()
     {
         var result = await _userService.GetAllUsersAsync();
-        await result.ExecuteAsync(HttpContext);
+
+        var httpResult = result.Match(
+            users => Results.Ok(users),
+            errors => MapErrors(errors));
+
+        await httpResult.ExecuteAsync(HttpContext);
     }
 
     [HttpGet("{id:guid}")]
     public async Task GetById(Guid id)
     {
         var result = await _userService.GetUserByIdAsync(id);
-        await result.ExecuteAsync(HttpContext);
+        
+        var httpResult = result.Match(
+            user => Results.Ok(user),
+            errors => MapErrors(errors));
+
+        await httpResult.ExecuteAsync(HttpContext);
+    }
+
+    private IResult MapErrors(IEnumerable<Error> errors)
+    {
+        // For simplicity, we only handle NotFound error here.
+        if (errors.Any(error => error.Type == ErrorType.NotFound))
+        {
+            return Results.NotFound();
+        }
+
+        // For other errors, return a generic 400 Bad Request.
+        return Results.BadRequest();
     }
 }

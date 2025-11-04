@@ -1,7 +1,9 @@
-﻿namespace TestApi.Users.Services;
+﻿using ErrorOr;
+
+namespace TestApi.Users.Services;
 
 public interface IUserService
 {
-    Task<IResult> GetAllUsersAsync();
-    Task<IResult> GetUserByIdAsync(Guid id);
+    Task<ErrorOr<IEnumerable<User>>> GetAllUsersAsync();
+    Task<ErrorOr<User>> GetUserByIdAsync(Guid id);
 }

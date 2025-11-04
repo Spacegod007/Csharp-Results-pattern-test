@@ -1,4 +1,6 @@
-﻿namespace TestApi.Users.Services;
+﻿using ErrorOr;
+
+namespace TestApi.Users.Services;
 
 public class UserService : IUserService
 {
@@ -13,25 +15,26 @@ public class UserService : IUserService
         new() { Id = User3, Name = "Charlie", Email = "charlie@example.com" },
     };
 
-    public UserService()
+    public async Task<ErrorOr<IEnumerable<User>>> GetAllUsersAsync()
     {
+        // simulate async operation and prevent compiler warning
+        await Task.CompletedTask;
+
+        return _users.ToList();
     }
 
-    public Task<IResult> GetAllUsersAsync()
+    public async Task<ErrorOr<User>> GetUserByIdAsync(Guid id)
     {
-        var result = Results.Ok(_users);
-        return Task.FromResult<IResult>(result);
-    }
+        // simulate async operation and prevent compiler warning
+        await Task.CompletedTask;
 
-    public Task<IResult> GetUserByIdAsync(Guid id)
-    {
         var user = _users.FirstOrDefault(u => u.Id == id);
 
         if (user is null)
         {
-            return Task.FromResult<IResult>(Results.NotFound());
+            return Error.NotFound();
         }
 
-        return Task.FromResult<IResult>(Results.Ok(user));
+        return user;
     }
 }

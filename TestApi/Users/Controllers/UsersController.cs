@@ -41,8 +41,12 @@ public class UsersController : ControllerBase
         await httpResult.ExecuteAsync(HttpContext);
     }
 
+    // This method should be an extension method or implicit conversion to simplify logical operations that happen in the controller for a response.
     private IResult MapErrors(IEnumerable<Error> errors)
     {
+        // We could use custom error codes and descriptions to give more detailed error responses and even use ProblemDetails for a more standardized approach.
+        // This is demo code to view options and possibilities.
+
         // For simplicity, we only handle NotFound error here.
         if (errors.Any(error => error.Type == ErrorType.NotFound))
         {

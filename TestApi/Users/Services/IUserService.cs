@@ -1,7 +1,11 @@
-﻿namespace TestApi.Users.Services;
+﻿using OneOf;
+
+using TestApi.Users.Errors;
+
+namespace TestApi.Users.Services;
 
 public interface IUserService
 {
-    Task<IResult> GetAllUsersAsync();
-    Task<IResult> GetUserByIdAsync(Guid id);
+    Task<OneOf<IEnumerable<User>>> GetAllUsersAsync();
+    Task<OneOf<User, UserNotFound>> GetUserByIdAsync(Guid id);
 }

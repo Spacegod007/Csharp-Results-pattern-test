@@ -16,16 +16,22 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task GetAll()
+    public async Task<IActionResult> GetAll()
     {
         var result = await _userService.GetAllUsersAsync();
-        await result.ExecuteAsync(HttpContext);
+
+        return result.Match<IActionResult>(
+            users => Ok(users));
     }
 
     [HttpGet("{id:guid}")]
-    public async Task GetById(Guid id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _userService.GetUserByIdAsync(id);
-        await result.ExecuteAsync(HttpContext);
+
+        return result.Match<IActionResult>(
+            user => Ok(user),
+            notFound => NotFound(new { Message = $"User with id {notFound.Id} not found" })
+        );
     }
 }
